@@ -1,0 +1,99 @@
+// LED pins
+const int ledPin11 = 11;
+const int ledPin10 = 10;
+const int ledPin9 = 9;
+const int ledPin5 = 5;
+const int ldrPin = A3; 
+
+// Ultrasonic pins
+const int trigPin1 = 7;
+const int echoPin1 = 6;
+long duration1;
+int distance1;
+
+const int trigPin2 = 4;
+const int echoPin2 = 3;
+long duration2;
+int distance2;
+
+void setup() { 
+
+  Serial.begin(9600);
+  pinMode(trigPin1, OUTPUT);
+  pinMode(echoPin1, INPUT);
+  pinMode(trigPin2, OUTPUT);
+  pinMode(echoPin2, INPUT);
+
+  pinMode(ledPin11, OUTPUT);
+  pinMode(ledPin10, OUTPUT);
+  pinMode(ledPin9, OUTPUT);
+  pinMode(ledPin5, OUTPUT);
+
+  pinMode(ldrPin, INPUT); 
+
+}
+
+void loop() { 
+
+  int ldrStatus = analogRead(ldrPin);
+  
+  digitalWrite(trigPin1, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin1, LOW);
+  duration1 = pulseIn(echoPin1, HIGH);
+  distance1 = duration1 * 0.0340 / 2;
+  Serial.print("Distance-1: ");
+  Serial.println(distance1);
+  
+  digitalWrite(trigPin2, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin2, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin2, LOW);
+  duration2 = pulseIn(echoPin2, HIGH);
+  distance2 = duration2 * 0.0340 / 2;
+  Serial.print("Distance-2: ");
+  Serial.println(distance2);
+  
+
+if (ldrStatus <= 200 && distance1<300 && distance2<300) {
+	  digitalWrite(ledPin11,HIGH);
+      digitalWrite(ledPin10,HIGH);
+      digitalWrite(ledPin9,HIGH);
+      digitalWrite(ledPin5,HIGH);
+  
+}
+  
+ else if (ldrStatus <= 200 && distance1>300 && distance2<300) {
+      digitalWrite(ledPin11,HIGH);
+      digitalWrite(ledPin10,HIGH);
+      digitalWrite(ledPin9,LOW);
+      digitalWrite(ledPin5,LOW);
+ }
+  
+  else if (ldrStatus <= 200 && distance1<=300 && distance2>300) {
+      digitalWrite(ledPin11,LOW);
+      digitalWrite(ledPin10,LOW);
+      digitalWrite(ledPin9,HIGH);
+      digitalWrite(ledPin5,HIGH);
+  
+ }
+  else if (ldrStatus <= 200 && distance1>300 && distance2>300) {
+      digitalWrite(ledPin11,LOW);
+      digitalWrite(ledPin10,LOW);
+      digitalWrite(ledPin9,LOW);
+      digitalWrite(ledPin5,LOW);
+  
+ }
+  
+else if(ldrStatus>200){
+      digitalWrite(ledPin11,LOW);
+      digitalWrite(ledPin10,LOW);
+      digitalWrite(ledPin9,LOW);
+      digitalWrite(ledPin5,LOW);
+
+}
+
+}
